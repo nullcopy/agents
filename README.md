@@ -1,18 +1,18 @@
 # skills
 
-Skills for every agent. Each skill is `skills/<name>/SKILL.md` in the open [Agent Skills](https://agentskills.io) format.
+Skills and instructions for every agent.
+
+- `skills/<name>/SKILL.md`: skills in the open [Agent Skills](https://agentskills.io) format, loaded on demand.
+- `AGENTS.md`: guidelines every agent loads in every session. Keep it short.
 
 ## Setup
 
 ```sh
 git clone https://github.com/nullcopy/skills ~/src/skills
-# ~/.agents: Codex, Gemini CLI, Copilot, Cursor, OpenCode. ~/.claude: Claude Code.
-for d in ~/.agents/skills ~/.claude/skills; do
-  mkdir -p "${d%/*}"
-  [ -e "$d" ] && [ ! -L "$d" ] && mv "$d" "$d.bak"  # move skills you want to keep into ~/src/skills/skills
-  ln -sfn ~/src/skills/skills "$d"
-done
+~/src/skills/install.sh
 ```
+
+`install.sh` symlinks `skills/` into `~/.agents/skills` (Codex, Gemini CLI, Copilot, Cursor, OpenCode) and `~/.claude/skills` (Claude Code), and `AGENTS.md` into each agent's global instructions file. Existing files are moved to `*.bak`; move anything worth keeping into this repo.
 
 Update: `git -C ~/src/skills pull`
 
