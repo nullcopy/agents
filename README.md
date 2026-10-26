@@ -1,4 +1,4 @@
-# skills
+# agents
 
 Skills and instructions for every agent.
 
@@ -8,13 +8,13 @@ Skills and instructions for every agent.
 ## Setup
 
 ```sh
-git clone https://github.com/nullcopy/skills ~/src/skills
-~/src/skills/install.sh
+git clone https://github.com/nullcopy/agents ~/src/agents
+~/src/agents/install.sh
 ```
 
 `install.sh` symlinks `skills/` into `~/.agents/skills` (Codex, Gemini CLI, Copilot, Cursor, OpenCode) and `~/.claude/skills` (Claude Code), and `AGENTS.md` into each agent's global instructions file. Existing files are moved to `*.bak`; move anything worth keeping into this repo.
 
-Update: `git -C ~/src/skills pull`
+Update: `git -C ~/src/agents pull`
 
 ## Layout
 
