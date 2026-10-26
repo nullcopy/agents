@@ -3,7 +3,7 @@ name: skill-author
 description: Create or edit a skill in the nullcopy/agents repo. Use when asked to write, add, or improve an agent skill.
 ---
 
-Write `skills/<name>/SKILL.md` in the agents repo (usually `~/src/agents`).
+Write `skills/<name>/SKILL.md` in the nullcopy/agents repo. If its location is unclear, ask.
 
 Rules (token budget matters; every skill's description is loaded into every session):
 - Frontmatter: only `name` (kebab-case, matches folder) and `description`. Other fields are dropped by some agents.
