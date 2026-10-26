@@ -1,9 +1,9 @@
 ---
 name: skill-author
-description: Create or edit a skill in the nullcopy/skills repo. Use when asked to write, add, or improve an agent skill.
+description: Create or edit a skill in the nullcopy/agents repo. Use when asked to write, add, or improve an agent skill.
 ---
 
-Write `skills/<name>/SKILL.md` in the skills repo (usually `~/src/skills`).
+Write `skills/<name>/SKILL.md` in the agents repo (usually `~/src/agents`).
 
 Rules (token budget matters; every skill's description is loaded into every session):
 - Frontmatter: only `name` (kebab-case, matches folder) and `description`. Other fields are dropped by some agents.
