@@ -31,4 +31,4 @@ description: Review a pull request by verifying each claimed issue is actually f
 
 6. Report findings in the conversation: each with `file:line`, what is wrong, and the smallest concrete fix. Group blocking (unfixed claim, correctness, safety) above suggestions (design, duplication, tests). Brief and direct.
 
-7. Ask whether to post the review on GitHub. If yes, follow `references/posting.md` — one review, an inline comment per finding, request changes if anything is blocking, approve otherwise.
+7. Ask whether to post the review on GitHub. If yes, follow `references/posting.md` — one review; every finding is an inline comment on the code, the review body is only the reviewed commit and ACK/NACK (request changes if anything is blocking, approve otherwise), and nothing is summarised in the body.
