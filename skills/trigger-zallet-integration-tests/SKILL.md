@@ -1,6 +1,6 @@
 ---
 name: trigger-zallet-integration-tests
-description: Trigger zcash/zallet integration tests for a fork-based PR by opening a same-repo throwaway PR, then close and delete it.
+description: Trigger zcash/zallet integration tests for a fork-based PR via a same-repo draft throwaway PR, then close and delete it once the tests start.
 ---
 
 # Trigger integration tests for a zallet fork PR
@@ -46,11 +46,10 @@ BRANCH="trigger-integration-tests-$PR"
    If the branch already exists from an earlier attempt, close and delete that
    attempt first rather than force-pushing.
 
-3. Open a ready-for-review PR against the original PR's base branch (normally
-   `main`):
+3. Open a draft PR against the original PR's base branch (normally `main`):
 
    ```sh
-   gh pr create -R zcash/zallet --base main --head "$BRANCH" \
+   gh pr create -R zcash/zallet --draft --base main --head "$BRANCH" \
      --title "DNM! integration test trigger PR for #$PR" \
      --body "DO NOT MERGE!
    This PR exists solely to trigger integration tests for #$PR, whose branch lives in a fork and cannot read the dispatch secrets."
@@ -61,14 +60,13 @@ BRANCH="trigger-integration-tests-$PR"
    PR's body if you can edit it: the trigger reads the body of the first PR
    matching the head SHA, which need not be the throwaway one.
 
-4. Wait for the trigger job to succeed, then watch the dispatched run:
+4. Wait for the trigger job to succeed, then identify the dispatched run:
 
    ```sh
    gh run list -R zcash/zallet --workflow integration.yml --branch "$BRANCH" --limit 1
    gh run watch <run-id> -R zcash/zallet --exit-status
 
    gh run list -R zcash/integration-tests --event repository_dispatch --limit 5
-   gh run watch <run-id> -R zcash/integration-tests --exit-status
    ```
 
    The dispatched run is named `CI`, has display title `zallet-interop-request`,
@@ -76,17 +74,21 @@ BRANCH="trigger-integration-tests-$PR"
    time (seconds after the trigger job), not by SHA. The trigger skips diffs
    that touch only docs, other workflows, licensing, or supply-chain tooling.
 
-5. To test a new revision, repeat steps 1-2. A push to the open throwaway PR
-   fires `synchronize` and dispatches again. If the throwaway PR is closed,
-   reopen it after pushing; a closed PR emits no `pull_request` event for new
-   commits. To re-run the same commit, close and reopen the PR.
-
-6. Copy the integration run URL to the original PR if useful, then close and
-   delete the throwaway PR:
+5. As soon as the dispatched run is `in_progress`, close the draft PR and
+   delete its branch. The run is independent of the PR and continues.
 
    ```sh
+   gh run view <run-id> -R zcash/integration-tests --json status,url
    gh pr close <throwaway-PR> -R zcash/zallet --delete-branch
    ```
+
+   Then follow the run to completion and copy its URL to the original PR:
+
+   ```sh
+   gh run watch <run-id> -R zcash/integration-tests --exit-status
+   ```
+
+6. To test another revision, repeat from step 1 with a new throwaway PR.
 
 Never merge the throwaway PR. That would land the commits without the original
 PR's review and merge path.
