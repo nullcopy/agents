@@ -60,7 +60,7 @@ BRANCH="trigger-integration-tests-$PR"
    PR's body if you can edit it: the trigger reads the body of the first PR
    matching the head SHA, which need not be the throwaway one.
 
-4. Wait for the trigger job to succeed, then identify the dispatched run:
+4. Wait only for the trigger job to succeed, then identify the dispatched run:
 
    ```sh
    gh run list -R zcash/zallet --workflow integration.yml --branch "$BRANCH" --limit 1
@@ -82,11 +82,8 @@ BRANCH="trigger-integration-tests-$PR"
    gh pr close <throwaway-PR> -R zcash/zallet --delete-branch
    ```
 
-   Then follow the run to completion and copy its URL to the original PR:
-
-   ```sh
-   gh run watch <run-id> -R zcash/integration-tests --exit-status
-   ```
+   Report the run URL to the user. Do not wait for the run to finish, and do not
+   comment on the original PR or the throwaway PR.
 
 6. To test another revision, repeat from step 1 with a new throwaway PR.
 
